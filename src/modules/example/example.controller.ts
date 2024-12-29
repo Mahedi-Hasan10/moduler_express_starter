@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Example } from './example.model';
+import { sendMail } from '../../utils/sendMail';
 
 // Get all examples
 export const getExamples = async (req: Request, res: Response): Promise<void> => {
@@ -22,12 +23,13 @@ export const getExamples = async (req: Request, res: Response): Promise<void> =>
 export const createExample = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, email } = req.body;
-        const example = new Example({ name, email });
-        const savedExample = await example.save();
+        // const example = new Example({ name, email });
+        // const savedExample = await example.save();
+        await sendMail(email, "Test Subjecr", "Test Message")
         res.status(201).send({
             error: false,
-            msg: "Example created successfully",
-            data: savedExample
+            msg: "Example created successfully"
+            // data: savedExample
         });
     } catch (error: any) {
         res.status(500).send({
